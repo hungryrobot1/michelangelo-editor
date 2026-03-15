@@ -1,0 +1,26 @@
+{
+  "name": "michelangelo-editor",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:player": "vite build --config vite.player.config.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@xyflow/react": "^12.6.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "ink": "^6.8.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.3.5"
+  }
+}

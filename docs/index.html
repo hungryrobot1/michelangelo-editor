@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michelangelo - Interactive Fiction Editor</title>
+  <link rel="icon" type="image/svg+xml" href="editor/icon-192.svg" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0e0e1a;
+      --surface: #1a1a2e;
+      --border: #2a2a44;
+      --text: #e0dfe4;
+      --text-dim: #8888a0;
+      --accent: #e2b340;
+      --accent-hover: #f0c960;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .logo {
+      font-size: 4rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.04em;
+    }
+
+    .tagline {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      font-style: italic;
+      margin-bottom: 3rem;
+    }
+
+    .cta {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-family: inherit;
+      font-weight: bold;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .cta:hover { background: var(--accent-hover); }
+
+    .features {
+      max-width: 64rem;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .feature h3 {
+      color: var(--accent);
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    .about {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .about h2 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .about p {
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .about a { color: var(--accent); }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="logo">Michelangelo</div>
+    <p class="tagline">A visual editor for interactive fiction</p>
+    <a href="editor/" class="cta">Open the Editor</a>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <h3>Visual Node Editor</h3>
+      <p>Build branching narratives by connecting story nodes on a canvas. See your entire game structure at a glance.</p>
+    </div>
+    <div class="feature">
+      <h3>RPG Elements</h3>
+      <p>Add attributes, resources, items, abilities, and companions. Create skill checks, combat, and character progression.</p>
+    </div>
+    <div class="feature">
+      <h3>Play Anywhere</h3>
+      <p>Export your game as a standalone web page or a terminal app. No engine or runtime required to play.</p>
+    </div>
+    <div class="feature">
+      <h3>Works Offline</h3>
+      <p>Install as a desktop or mobile app. Everything runs locally in your browser &mdash; no account, no server, no tracking.</p>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>What is Michelangelo?</h2>
+    <p>
+      Michelangelo is a free, open-source tool for creating interactive fiction &mdash;
+      branching stories, text adventures, and narrative RPGs. It runs entirely in your
+      browser and can be installed as a standalone app on any device.
+    </p>
+    <p>
+      Design your story visually with a node-based editor, add game mechanics like
+      skill checks and inventory, then export a self-contained game file that anyone
+      can play in a browser or terminal.
+    </p>
+  </section>
+
+  <footer>
+    <a href="https://github.com/hungryrobot1/michelangelo">GitHub</a>
+  </footer>
+</body>
+</html>
