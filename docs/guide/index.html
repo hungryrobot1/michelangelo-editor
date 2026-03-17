@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michelangelo — Guide</title>
+  <meta name="theme-color" content="#1a1a2e" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="../editor/icon-192.svg" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0e0e1a;
+      --surface: #1a1a2e;
+      --border: #2a2a44;
+      --text: #e0dfe4;
+      --text-dim: #8888a0;
+      --accent: #e2b340;
+      --accent-hover: #f0c960;
+      --code-bg: #14142a;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* ── Navigation bar ── */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    nav .nav-brand {
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1rem;
+      margin-right: auto;
+    }
+
+    /* ── Table of contents (sidebar) ── */
+
+    .page-layout {
+      max-width: 72rem;
+      margin: 0 auto;
+      display: flex;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .toc {
+      position: sticky;
+      top: 4rem;
+      width: 220px;
+      flex-shrink: 0;
+      max-height: calc(100vh - 5rem);
+      overflow-y: auto;
+      font-size: 0.85rem;
+      padding-right: 1rem;
+      align-self: flex-start;
+    }
+
+    .toc a {
+      display: block;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 4px 0;
+      border-left: 2px solid transparent;
+      padding-left: 12px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
+    .toc a.toc-h2 { font-weight: bold; margin-top: 8px; }
+    .toc a.toc-h3 { padding-left: 24px; font-size: 0.8rem; }
+
+    /* ── Main content ── */
+
+    .content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .content h1 {
+      color: var(--accent);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .content .subtitle {
+      color: var(--text-dim);
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .content h2 {
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .content h3 {
+      color: var(--text);
+      font-size: 1.15rem;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .content p {
+      margin-bottom: 1rem;
+    }
+
+    .content ul, .content ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+
+    .content li { margin-bottom: 0.4rem; }
+
+    .content a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .content a:hover { text-decoration: underline; }
+
+    .content strong { color: var(--text); }
+
+    .content code {
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.9em;
+      font-family: 'Menlo', 'Consolas', monospace;
+    }
+
+    /* ── Info cards ── */
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .card h4 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .card p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 0;
+    }
+
+    /* ── Tables ── */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--accent);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    td { color: var(--text-dim); }
+    td:first-child { color: var(--text); }
+
+    /* ── Responsive ── */
+
+    @media (max-width: 768px) {
+      .toc { display: none; }
+      .page-layout { padding: 1rem; }
+      .content h1 { font-size: 1.6rem; }
+      .content h2 { font-size: 1.3rem; }
+      nav { padding: 0.75rem 1rem; gap: 1rem; font-size: 0.8rem; }
+    }
+
+    /* ── Footer ── */
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="nav-brand">Michelangelo</a>
+    <a href="../editor/">Editor</a>
+    <a href="./">Guide</a>
+    <a href="https://github.com/hungryrobot1/michelangelo-editor">GitHub</a>
+  </nav>
+
+  <div class="page-layout">
+    <aside class="toc">
+      <a href="#getting-started" class="toc-h2">Getting Started</a>
+      <a href="#creating-a-project" class="toc-h3">Creating a Project</a>
+      <a href="#the-layout" class="toc-h3">The Layout</a>
+
+      <a href="#canvas" class="toc-h2">The Canvas</a>
+      <a href="#nodes" class="toc-h3">Nodes</a>
+      <a href="#connections" class="toc-h3">Connections</a>
+      <a href="#region-comments" class="toc-h3">Region Comments</a>
+      <a href="#context-menu" class="toc-h3">Context Menu</a>
+
+      <a href="#inspector" class="toc-h2">The Inspector</a>
+      <a href="#dialogue-nodes" class="toc-h3">Dialogue Nodes</a>
+      <a href="#character-creation-nodes" class="toc-h3">Character Creation</a>
+      <a href="#choices" class="toc-h3">Choices</a>
+
+      <a href="#entities" class="toc-h2">Entities</a>
+      <a href="#attributes" class="toc-h3">Attributes</a>
+      <a href="#resources" class="toc-h3">Resources</a>
+      <a href="#items" class="toc-h3">Items</a>
+      <a href="#abilities" class="toc-h3">Abilities</a>
+      <a href="#traits" class="toc-h3">Traits</a>
+      <a href="#companions" class="toc-h3">Companions</a>
+
+      <a href="#conditions-and-effects" class="toc-h2">Conditions &amp; Effects</a>
+      <a href="#conditions" class="toc-h3">Conditions</a>
+      <a href="#effects" class="toc-h3">Effects</a>
+
+      <a href="#testing" class="toc-h2">Testing &amp; Export</a>
+      <a href="#shortcuts" class="toc-h2">Keyboard Shortcuts</a>
+      <a href="#saving" class="toc-h2">Saving &amp; Storage</a>
+    </aside>
+
+    <main class="content">
+      <h1>Guide</h1>
+      <p class="subtitle">Everything you need to build interactive fiction with Michelangelo.</p>
+
+      <!-- ================================================================ -->
+
+      <h2 id="getting-started">Getting Started</h2>
+
+      <h3 id="creating-a-project">Creating a Project</h3>
+      <p>
+        When you first open Michelangelo, you'll see the <strong>project menu</strong>.
+        Click <strong>+ New Project</strong> to create one. Each project starts with a small
+        scaffold: a character creation node, a start node, and a second node connected by a choice.
+      </p>
+      <p>
+        You can also <strong>upload</strong> an existing project &mdash; either a single
+        <code>.json</code> file or a folder of JSON files from a previous export.
+      </p>
+
+      <h3 id="the-layout">The Layout</h3>
+      <p>The editor has three panels:</p>
+      <ul>
+        <li><strong>Sidebar</strong> (left) &mdash; manage entities (attributes, items, etc.) and project settings.</li>
+        <li><strong>Canvas</strong> (center) &mdash; your story graph. Drag nodes, draw connections, pan and zoom.</li>
+        <li><strong>Inspector</strong> (right) &mdash; edit the selected node's text, choices, conditions, and effects.</li>
+      </ul>
+      <p>
+        The <strong>toolbar</strong> at the top provides save, undo/redo, node creation,
+        validation, test play, and export controls.
+      </p>
+
+      <!-- ================================================================ -->
+
+      <h2 id="canvas">The Canvas</h2>
+
+      <h3 id="nodes">Nodes</h3>
+      <p>
+        Every moment in your story is a <strong>node</strong>. Nodes appear as cards on the canvas.
+        Click a node to select it and open it in the inspector. Drag to reposition.
+      </p>
+      <p>
+        There are two types of nodes:
+      </p>
+      <ul>
+        <li><strong>Dialogue nodes</strong> &mdash; contain text the player reads and choices they can make.</li>
+        <li><strong>Character creation nodes</strong> &mdash; present the player with character creation before the story begins.</li>
+      </ul>
+      <p>
+        The <strong>start node</strong> (marked with a badge) is where the game begins.
+        You can change which node is the start node from the inspector or the context menu.
+      </p>
+
+      <h3 id="connections">Connections</h3>
+      <p>
+        Edges connect nodes together. Each edge represents a choice or transition.
+        To create a connection, drag from a node's <strong>source handle</strong> (bottom)
+        to another node's <strong>target handle</strong> (top). This automatically adds a
+        new choice pointing to the target node.
+      </p>
+
+      <h3 id="region-comments">Region Comments</h3>
+      <p>
+        Region comments are colored rectangles you place behind groups of nodes to organize
+        your canvas. Add them from the toolbar (<strong>Add &rarr; Region Comment</strong>)
+        or the right-click context menu. Each region has a label, optional notes, and a color.
+        Resize by dragging the edges.
+      </p>
+
+      <h3 id="context-menu">Context Menu</h3>
+      <p>Right-click on the canvas or a node to open the context menu:</p>
+      <ul>
+        <li><strong>On empty canvas:</strong> New Dialogue Node, New Character Creation Node, Paste, Region Comment (with color picker), Search Nodes.</li>
+        <li><strong>On a node:</strong> Set as Start Node, Duplicate, Copy, Delete.</li>
+      </ul>
+
+      <!-- ================================================================ -->
+
+      <h2 id="inspector">The Inspector</h2>
+      <p>
+        Select a node to see its details in the inspector panel on the right.
+      </p>
+
+      <h3 id="dialogue-nodes">Dialogue Nodes</h3>
+      <p>A dialogue node has the following fields:</p>
+      <ul>
+        <li><strong>Name</strong> &mdash; a label for the node (shown on the canvas card).</li>
+        <li><strong>Text</strong> &mdash; the narrative text the player sees.</li>
+        <li><strong>Image</strong> &mdash; an optional image path to display with the text.</li>
+        <li><strong>On Enter Effects</strong> &mdash; effects that trigger when the player arrives at this node.</li>
+        <li><strong>Choices</strong> &mdash; the list of options the player can pick (see below).</li>
+      </ul>
+      <p>
+        A dialogue node with <strong>no choices</strong> is a dead end &mdash; the story ends there.
+        The validator will flag these so you can decide if they're intentional endings or missing links.
+      </p>
+
+      <h3 id="character-creation-nodes">Character Creation Nodes</h3>
+      <p>
+        A character creation node lets the player customize their character before the story begins.
+        It has a single <strong>Next Node</strong> field &mdash; the node to go to after creation is complete.
+        The creation method (point-buy, dice roll, or preset) is configured in the sidebar under project settings.
+      </p>
+
+      <h3 id="choices">Choices</h3>
+      <p>Each choice on a dialogue node has:</p>
+      <ul>
+        <li><strong>Text</strong> &mdash; what the player reads as the option.</li>
+        <li><strong>Target</strong> &mdash; which node the player goes to when they pick this choice.</li>
+        <li><strong>Condition</strong> (optional) &mdash; a requirement that must be met for this choice to appear.</li>
+        <li><strong>Effects</strong> (optional) &mdash; changes that happen when this choice is selected (give items, modify stats, etc.).</li>
+        <li><strong>Required ability</strong> (optional) &mdash; an ability the player must have to see this choice.</li>
+      </ul>
+      <p>
+        Choices can be reordered with the up/down arrows in the inspector.
+      </p>
+
+      <!-- ================================================================ -->
+
+      <h2 id="entities">Entities</h2>
+      <p>
+        Entities are the building blocks of your game's mechanics. They are managed in the
+        <strong>sidebar</strong> and referenced by conditions and effects on your choices.
+      </p>
+
+      <div class="card-grid">
+        <div class="card" id="attributes">
+          <h4>Attributes</h4>
+          <p>
+            Permanent character stats like Strength, Intelligence, or Charisma.
+            Each has a base value, min, and max. Used for stat checks on choices
+            (e.g., "Strength &ge; 12").
+          </p>
+        </div>
+        <div class="card" id="resources">
+          <h4>Resources</h4>
+          <p>
+            Values that change during gameplay &mdash; Health, Mana, Gold, etc.
+            Each has a default, min, and max. Effects can add, subtract, or set resource values.
+          </p>
+        </div>
+        <div class="card" id="items">
+          <h4>Items</h4>
+          <p>
+            Objects the player can carry. Items have a name, description, and category.
+            They can be stackable (player can hold multiples) or unique.
+            Conditions can check item possession; effects can give or remove items.
+          </p>
+        </div>
+        <div class="card" id="abilities">
+          <h4>Abilities</h4>
+          <p>
+            Skills or powers the player can acquire. Abilities can gate choices
+            (a choice may require a specific ability to appear) and can be granted
+            or removed by effects.
+          </p>
+        </div>
+        <div class="card" id="traits">
+          <h4>Traits</h4>
+          <p>
+            Descriptive tags on the character &mdash; personality, background, or status markers.
+            Traits have a category (background, personality, etc.) and can be checked
+            or modified through conditions and effects.
+          </p>
+        </div>
+        <div class="card" id="companions">
+          <h4>Companions</h4>
+          <p>
+            NPCs that can join the player's party. Companions have a relationship score
+            that can be checked (&ldquo;relationship with Aria &ge; 50&rdquo;) and modified
+            by effects. Conditions can test whether a companion is present.
+          </p>
+        </div>
+      </div>
+
+      <!-- ================================================================ -->
+
+      <h2 id="conditions-and-effects">Conditions &amp; Effects</h2>
+
+      <h3 id="conditions">Conditions</h3>
+      <p>
+        Conditions determine whether a choice is available to the player.
+        They are set on individual choices and evaluated at runtime.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Condition</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Visited / Not Visited</td><td>Whether the player has been to a specific node.</td></tr>
+          <tr><td>Has Item / Not Has Item</td><td>Whether the player is carrying an item (with optional quantity).</td></tr>
+          <tr><td>Has Ability / Not Has Ability</td><td>Whether the player has an ability.</td></tr>
+          <tr><td>Has Trait / Not Has Trait</td><td>Whether the player has a trait.</td></tr>
+          <tr><td>Has Companion / Not Has Companion</td><td>Whether a companion is in the party.</td></tr>
+          <tr><td>Companion Relationship</td><td>Check relationship score with a companion (e.g., &ge; 50).</td></tr>
+          <tr><td>Attribute Check</td><td>Compare an attribute against a threshold (e.g., Strength &ge; 12).</td></tr>
+          <tr><td>Resource Check</td><td>Compare a resource against a threshold (e.g., Gold &ge; 100).</td></tr>
+          <tr><td>And / Or / Not</td><td>Combine multiple conditions with logic operators.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="effects">Effects</h3>
+      <p>
+        Effects are changes applied when a choice is selected or when a node is entered
+        (via "On Enter Effects"). Multiple effects can be stacked on a single choice.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Effect</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Add / Remove Item</td><td>Give or take items from the player's inventory.</td></tr>
+          <tr><td>Add / Remove Ability</td><td>Grant or revoke an ability.</td></tr>
+          <tr><td>Add / Remove Trait</td><td>Apply or remove a character trait.</td></tr>
+          <tr><td>Add / Remove Companion</td><td>Add or dismiss a companion from the party.</td></tr>
+          <tr><td>Modify Relationship</td><td>Change a companion's relationship score by a delta.</td></tr>
+          <tr><td>Modify Attribute</td><td>Change an attribute by a delta (e.g., +2 Strength).</td></tr>
+          <tr><td>Set Attribute</td><td>Set an attribute to an exact value.</td></tr>
+          <tr><td>Modify Resource</td><td>Change a resource by a delta (e.g., &minus;25 Health).</td></tr>
+          <tr><td>Set Resource</td><td>Set a resource to an exact value.</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ================================================================ -->
+
+      <h2 id="testing">Testing &amp; Export</h2>
+
+      <h3>Test Play</h3>
+      <p>
+        Click <strong>Test Play</strong> in the toolbar to play through your story from the start node.
+        You can also right-click any node in the inspector and choose <strong>Play from Here</strong>
+        to jump to a specific point (this enables debug mode, which shows extra state information).
+      </p>
+
+      <h3>Export Formats</h3>
+      <p>
+        The toolbar's export menu offers several output formats. When running
+        with the development server, all formats are available:
+      </p>
+      <ul>
+        <li><strong>Folder</strong> &mdash; a directory with HTML, CSS, and JS for hosting.</li>
+        <li><strong>Single HTML</strong> &mdash; one self-contained HTML file.</li>
+        <li><strong>JSON</strong> &mdash; the raw story data.</li>
+        <li><strong>CLI Player</strong> &mdash; a terminal-based version of your game.</li>
+        <li><strong>Desktop App</strong> &mdash; packaged for desktop.</li>
+      </ul>
+      <p>
+        When running as a static site (no server), use the <strong>Download Project</strong>
+        button on the project menu to save your story as a JSON file.
+      </p>
+
+      <!-- ================================================================ -->
+
+      <h2 id="shortcuts">Keyboard Shortcuts</h2>
+      <table>
+        <thead>
+          <tr><th>Shortcut</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Ctrl/Cmd + S</code></td><td>Save</td></tr>
+          <tr><td><code>Ctrl/Cmd + Z</code></td><td>Undo</td></tr>
+          <tr><td><code>Ctrl/Cmd + Shift + Z</code> / <code>Ctrl/Cmd + Y</code></td><td>Redo</td></tr>
+          <tr><td><code>Ctrl/Cmd + C</code></td><td>Copy selected node</td></tr>
+          <tr><td><code>Ctrl/Cmd + V</code></td><td>Paste node</td></tr>
+          <tr><td><code>Ctrl/Cmd + D</code></td><td>Duplicate selected node</td></tr>
+          <tr><td><code>Ctrl/Cmd + K</code></td><td>Open search palette</td></tr>
+          <tr><td><code>Delete</code> / <code>Backspace</code></td><td>Delete selected node</td></tr>
+          <tr><td><code>Escape</code></td><td>Deselect / close menus</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Node-editing shortcuts (copy, paste, delete, duplicate) are disabled while
+        typing in a text field to avoid conflicts.
+      </p>
+
+      <!-- ================================================================ -->
+
+      <h2 id="saving">Saving &amp; Storage</h2>
+      <p>
+        <strong>With the development server</strong> (running <code>npx vite</code> locally),
+        projects are saved to the file system. This is the best workflow for active development.
+      </p>
+      <p>
+        <strong>As a static site or PWA</strong> (including the hosted version at
+        <a href="https://hungryrobot1.github.io/michelangelo-editor/">hungryrobot1.github.io</a>),
+        projects are stored in your browser's <strong>IndexedDB</strong>. Data persists across
+        sessions but lives only in that browser. Use <strong>Download Project</strong> to
+        back up your work as a JSON file, and <strong>Upload JSON</strong> to restore it.
+      </p>
+      <p>
+        You can also <strong>install Michelangelo as a PWA</strong> for an app-like experience
+        with offline support. Look for the "Install as App" button on the landing page or
+        project menu.
+      </p>
+    </main>
+  </div>
+
+  <footer>
+    <a href="../">Home</a> &middot;
+    <a href="../editor/">Editor</a> &middot;
+    <a href="https://github.com/hungryrobot1/michelangelo-editor">GitHub</a>
+  </footer>
+</body>
+</html>
